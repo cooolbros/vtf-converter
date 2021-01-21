@@ -1,0 +1,21 @@
+﻿<Window x:Class="vtf_converter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:vtf_converter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid Margin="15">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="auto"/>
+		</Grid.RowDefinitions>
+		<Grid Grid.Row="0">
+			<Label  Name="FilePathTitle" Content="" FontSize="25" />
+		</Grid>	
+		<Grid Grid.Row="1">
+			<Button  Name="FilePathButton" Content="Select" FontSize="25" HorizontalAlignment="Left" Click="FilePathButton_Click"/>
+		</Grid>
+	</Grid>
+</Window>
