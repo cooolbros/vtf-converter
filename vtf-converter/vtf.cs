@@ -20,13 +20,17 @@ namespace vtf_converter
 			Bitmap Image = new Bitmap(InFile);
 			Bitmap SquareImage = ResizeImage(Image);
 
-			// Convert to .tga
+			string MateralSrc = $"{this.TeamFortress2Folder}\\tf\\materialsrc";
+
+			// Create materialsrc (ensure it exists)
+			Directory.CreateDirectory(MateralSrc);
+
+			// Save image as .tga (cast using TGASharpLib)
 			TGA TGASquareImage = (TGA)SquareImage;
-			string TGALocation = $"{this.TeamFortress2Folder}\\tf\\materialsrc\\temp.tga";
-			TGASquareImage.Save(TGALocation);
+			TGASquareImage.Save($"{MateralSrc}\\temp.tga");
 
 			// Convert using VTEX
-			VTEXConvert(TGALocation);
+			VTEXConvert(MateralSrc, "temp");
 
 			// Path to VTEX output file
 			string VTFLocation = $"{this.TeamFortress2Folder}\\tf\\materials\\temp.vtf";
@@ -41,7 +45,8 @@ namespace vtf_converter
 			File.Copy(VTFLocation, OutFile, true);
 
 			// Delete temporary tga and vtex output
-			File.Delete(TGALocation);
+			File.Delete($"{MateralSrc}\\temp.tga");
+			File.Delete($"{MateralSrc}\\temp.txt");
 			File.Delete(VTFLocation);
 		}
 
@@ -63,43 +68,26 @@ namespace vtf_converter
 			return SquareImage;
 		}
 
-		private void VTEXConvert(string TGALocation)
+		private void VTEXConvert(string FolderPath, string FileNameNoExt)
 		{
+			// VTEX Args
+			// https://developer.valvesoftware.com/wiki/Vtex_compile_parameters
+			File.WriteAllLines($"{FolderPath}\\{FileNameNoExt}.txt", new string[] {
+				"pointsample 1",
+				"nolod 1",
+				"nomip 1"
+			});
+
+			// VTEX CLI Args
 			string[] Args = {
-				$"\"{TGALocation}\"",
+				$"\"{FolderPath}\\{FileNameNoExt}.tga\"",
 				"-nopause",
 				"-game",
 				$"\"{this.TeamFortress2Folder}\\tf\\\"",
 			};
+
 			string ArgsString = String.Join(" ", Args);
 			Process.Start($"{this.TeamFortress2Folder}\\bin\\vtex.exe", ArgsString).WaitForExit();
-
 		}
 	}
 }
-
-/*
-ERROR: Usage: vtex [-outdir dir] [-quiet] [-nopause] [-mkdir] [-shader ShaderName] [-vmtparam Param Value] tex1.txt tex2.txt . . .
--quiet            : don't print anything out, don't pause for input
--warningsaserrors : treat warnings as errors
--nopause          : don't pause for input
--nomkdir          : don't create destination folder if it doesn't exist
--vmtparam         : adds parameter and value to the .vmt file
--outdir <dir>     : write output to the specified dir regardless of source filename and vproject
--deducepath       : deduce path of sources by target file names
--quickconvert     : use with "-nop4 -dontusegamedir -quickconvert" to upgrade old .vmt files
--crcvalidate      : validate .vmt against the sources
--crcforce         : generate a new .vmt even if sources crc matches
-        eg: -vmtparam $ignorez 1 -vmtparam $translucent 1
-Note that you can use wildcards and that you can also chain them
-e.g. materialsrc/monster1/*.tga materialsrc/monster2/*.tga*/
-
-// string TeamFortress2Folder = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\";
-
-// string VtexLocation = TeamFortress2Folder + "bin\\vtex.exe";
-
-// string Game = " -game \"" + TeamFortress2Folder + "tf" + "\"";
-
-// string Params = "\"" + "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\tf\\materialsrc\\temp_tga.tga" + "\"" + Game;
-
-// Process.Start(VtexLocation, Params);
