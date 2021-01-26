@@ -27,57 +27,39 @@ namespace vtf_converter
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		string TeamFortress2Folder = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2";
+
+		string SelectedFilePath;
+
 		public MainWindow()
 		{
 			InitializeComponent();
 		}
 
-		private void FilePathButton_Click(object sender, RoutedEventArgs e)
+		private void SelectFileButton_Click(object sender, RoutedEventArgs e)
 		{
 			using (var fbd = new System.Windows.Forms.OpenFileDialog())
 			{
 				fbd.ShowDialog();
-				FilePathTitle.Content = fbd.FileName;
+				this.SelectedFilePath = fbd.FileName;
+				PreviewImage.Source = new BitmapImage(new Uri(fbd.FileName));
+				OutFileLabel.Visibility = Visibility.Visible;
+				FilePathInput.Visibility = Visibility.Visible;
+				ConvertButton.Visibility = Visibility.Visible;
+			}
+		}
 
-				Bitmap Image = new Bitmap(fbd.FileName);
-
-				int ImageMaxSize = Math.Max(Image.Width, Image.Height);
-
-				// Calculate larger power of 2
-				int Power = 2;
-				do
-				{
-					Power *= 2;
-				}
-				while (Power < ImageMaxSize);
-
-				Bitmap SquareImage = new Bitmap(Power, Power);
-
-				// Paint Image onto the SquareImage bitmap
-				Graphics G = Graphics.FromImage(SquareImage);
-				G.DrawImage(Image, 0, 0, Power, Power);
-
-				string TempPath = Path.GetTempPath();
-
-				SquareImage.Save(TempPath + "temp.png");
-
-				TGA T = (TGA)SquareImage;
-
-				System.IO.Directory.CreateDirectory("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\tf\\materialsrc\\");
-
-				T.Save("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\tf\\materialsrc\\temp_tga.tga");
-
-
-				string TeamFortress2Folder = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\";
-
-				string VtexLocation = TeamFortress2Folder + "bin\\vtex.exe";
-
-				string Game = " -game \"" + TeamFortress2Folder + "tf" + "\"";
-
-				string Params = "\"" + "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2\\tf\\materialsrc\\temp_tga.tga" + "\"" + Game;
-
-				Process.Start(VtexLocation, Params);
-
+		private void ConvertButton_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				VTF VTFConverter = new VTF(this.TeamFortress2Folder);
+				VTFConverter.Convert(this.SelectedFilePath, (this.TeamFortress2Folder + "\\" + FilePathInput.Text));
+				System.Windows.MessageBox.Show("Done!");
+			}
+			catch (Exception error)
+			{
+				System.Windows.MessageBox.Show(error.ToString());
 			}
 		}
 	}

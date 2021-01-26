@@ -1,21 +1,44 @@
 ﻿<Window x:Class="vtf_converter.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:vtf_converter"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Margin="15">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="auto"/>
-			<RowDefinition Height="auto"/>
-		</Grid.RowDefinitions>
-		<Grid Grid.Row="0">
-			<Label  Name="FilePathTitle" Content="" FontSize="25" />
-		</Grid>	
-		<Grid Grid.Row="1">
-			<Button  Name="FilePathButton" Content="Select" FontSize="25" HorizontalAlignment="Left" Click="FilePathButton_Click"/>
-		</Grid>
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:vtf_converter"
+		mc:Ignorable="d"
+		Title="VTF Converter"
+		WindowStartupLocation="Manual"
+		Width="350"
+		MinWidth="350"
+		Height="550">
+	<Grid Margin="15">
+		<Grid.Resources>
+			<Style TargetType="Label">
+				<Setter Property="FontSize" Value="16" />
+				<Setter Property="Margin" Value="0,0,0,10" />
+			</Style>
+			<Style TargetType="Button">
+				<Setter Property="FontSize" Value="18" />
+				<Setter Property="Padding" Value="5" />
+				<Setter Property="Margin" Value="0,0,0,10" />
+			</Style>
+			<Style TargetType="Image">
+				<Setter Property="Margin" Value="0,0,0,10" />
+			</Style>
+			<Style TargetType="TextBox">
+				<Setter Property="FontSize" Value="16" />
+				<Setter Property="Padding" Value="5" />
+				<Setter Property="Margin" Value="0,0,0,10" />
+			</Style>
+		</Grid.Resources>
+		<ScrollViewer VerticalScrollBarVisibility="Hidden">
+			<StackPanel>
+				<Label Content="VTF Converter" FontSize="25" />
+				<Button Name="SelectFileButton" Content="Select" Click="SelectFileButton_Click" />
+				<Image Name="PreviewImage" Width="330"/>
+				<Label Name="OutFileLabel" Content="Out File:" Margin="0" Visibility="Hidden" />
+				<TextBox Name="FilePathInput" Text="tf/materials/console/background_upward_widescreen.vtf" Visibility="Hidden" />
+				<Button Name="ConvertButton" Content="Convert" Visibility="Hidden" Click="ConvertButton_Click"/>
+			</StackPanel>
+		</ScrollViewer>
 	</Grid>
 </Window>
