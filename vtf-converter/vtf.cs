@@ -20,17 +20,17 @@ namespace vtf_converter
 			Bitmap Image = new Bitmap(InFile);
 			Bitmap SquareImage = ResizeImage(Image);
 
-			string MateralSrc = $"{this.TeamFortress2Folder}\\tf\\materialsrc";
+			string MaterialSrc = $"{this.TeamFortress2Folder}\\tf\\materialsrc";
 
 			// Create materialsrc (ensure it exists)
-			Directory.CreateDirectory(MateralSrc);
+			Directory.CreateDirectory(MaterialSrc);
 
 			// Save image as .tga (cast using TGASharpLib)
 			TGA TGASquareImage = (TGA)SquareImage;
-			TGASquareImage.Save($"{MateralSrc}\\temp.tga");
+			TGASquareImage.Save($"{MaterialSrc}\\temp.tga");
 
 			// Convert using VTEX
-			VTEXConvert(MateralSrc, "temp");
+			VTEXConvert(MaterialSrc, "temp");
 
 			// Path to VTEX output file
 			string VTFLocation = $"{this.TeamFortress2Folder}\\tf\\materials\\temp.vtf";
@@ -45,8 +45,8 @@ namespace vtf_converter
 			File.Copy(VTFLocation, OutFile, true);
 
 			// Delete temporary tga and vtex output
-			File.Delete($"{MateralSrc}\\temp.tga");
-			File.Delete($"{MateralSrc}\\temp.txt");
+			File.Delete($"{MaterialSrc}\\temp.tga");
+			File.Delete($"{MaterialSrc}\\temp.txt");
 			File.Delete(VTFLocation);
 		}
 
