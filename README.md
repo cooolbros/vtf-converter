@@ -12,7 +12,7 @@ Usage (GUI):
 
 Usage (C#)
 
-Include `vtf-converter/vtf.cs` in your project
+Include `vtf-converter/vtf.cs` and `vtf-converter/TGASharpLib.cs` in your project
 
 ```c#
 string TeamFortress2Folder = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Team Fortress 2";
