@@ -36,7 +36,7 @@
 				<Button Name="SelectFileButton" Content="Select" Click="SelectFileButton_Click" />
 				<Image Name="PreviewImage" Width="330"/>
 				<Label Name="OutFileLabel" Content="Out File:" Margin="0" Visibility="Hidden" />
-				<TextBox Name="FilePathInput" Text="tf/materials/console/background_upward_widescreen.vtf" Visibility="Hidden" />
+				<TextBox Name="FilePathInput" Text="tf/materials/console/background_upward_widescreen.vtf" Visibility="Hidden" FlowDirection="RightToLeft" />
 				<Button Name="ConvertButton" Content="Convert" Visibility="Hidden" Click="ConvertButton_Click"/>
 			</StackPanel>
 		</ScrollViewer>
